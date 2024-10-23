@@ -10,9 +10,6 @@ import SwiftUI
 struct NewsRowView: View {
     
     let item: NewsItemModel
-    var description: String {
-        return item.author + " · " + item.dateTime
-    }
     
     var body: some View {
         HStack {
@@ -24,7 +21,7 @@ struct NewsRowView: View {
                 Text(item.title)
                     .bold()
                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                Text(description)
+                Text(item.description)
                     .font(.body)
             }
         }

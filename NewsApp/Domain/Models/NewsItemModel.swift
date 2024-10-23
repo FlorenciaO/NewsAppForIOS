@@ -14,4 +14,7 @@ struct NewsItemModel: Identifiable {
     let dateTime: String
     // TODO: Change for an URL image
     let image: String = "newspaper"
+    var description: String {
+        return author + " · " + dateTime
+    }
 }
