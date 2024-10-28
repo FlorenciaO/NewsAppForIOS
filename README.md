@@ -13,8 +13,9 @@ This application gets the information from the public API JSONPlaceholder
 
 ### Key concepts
 * Clean Architecture
-* SOLID principles
 * MVVM
+* Repository pattern
+* SOLID principles
 * Reactive programming
 
 ### Used tools and libraries

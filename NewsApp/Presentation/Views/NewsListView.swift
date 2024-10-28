@@ -14,9 +14,15 @@ struct NewsListView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(viewModel.filteredItems, id: \.id) { item in
-                    NewsRowView(item: item)
+            ZStack {
+                if viewModel.isLoading {
+                    Text("Loading...")
+                } else {
+                    List {
+                        ForEach(viewModel.filteredItems, id: \.id) { item in
+                            NewsRowView(item: item)
+                        }
+                    }
                 }
             }
             .navigationTitle("World News")

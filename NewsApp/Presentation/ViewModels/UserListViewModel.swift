@@ -9,13 +9,22 @@ import Foundation
 
 class UserListViewModel: ObservableObject {
     @Published var users: [UserItemModel] = []
+    @Published var isLoading = true
+    
+    // TODO: Replace with DI pattern
+    private let repository: RepositoryProtocol = Repository()
     
     func onAppear() {
-        let newItems = [
-            UserItemModel(name: "Roberto", lastName: "Perez", company: "Company A"),
-            UserItemModel(name: "Roberto", lastName: "Perez", company: "Company B"),
-            UserItemModel(name: "Roberto", lastName: "Perez", company: "Company C")
-        ]
-        users.append(contentsOf: newItems)
+        Task {
+            do {
+                let users = try await repository.getUsers()
+                self.users = users.map { entity in
+                    UserItemModel(name: entity.name, lastName: entity.lastName, company: entity.company)
+                }
+            } catch {
+                // TODO: handle error
+            }
+        }
+        isLoading = false
     }
 }

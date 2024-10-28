@@ -10,6 +10,10 @@ import Foundation
 class NewsListViewModel: ObservableObject {
     @Published var items: [NewsItemModel] = []
     @Published var searchByTitle = ""
+    @Published var isLoading = true
+    
+    // TODO: Replace with DI pattern
+    private let repository: RepositoryProtocol = Repository()
     
     var filteredItems: [NewsItemModel] {
         guard !searchByTitle.isEmpty else { return items }
@@ -17,11 +21,16 @@ class NewsListViewModel: ObservableObject {
     }
     
     func onAppear() {
-        let newItems = [
-            NewsItemModel(title: "Title 1", author: "Author", dateTime: "MM/dd/yyyy hh:mm:ss"),
-            NewsItemModel(title: "Title 2", author: "Author", dateTime: "MM/dd/yyyy hh:mm:ss"),
-            NewsItemModel(title: "Title 3", author: "Author", dateTime: "MM/dd/yyyy hh:mm:ss"),
-        ]
-        items.append(contentsOf: newItems)
+        Task {
+            do {
+                let items = try await repository.getNews()
+                self.items = items.map { entity in
+                    NewsItemModel(title: entity.title, author: entity.author, dateTime: entity.dateTime)
+                }
+            } catch {
+                // TODO: handle error
+            }
+        }
+        isLoading = false
     }
 }

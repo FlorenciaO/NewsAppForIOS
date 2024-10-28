@@ -14,9 +14,15 @@ struct UserListView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(viewModel.users, id: \.id) { item in
-                    UserRowView(item: item)
+            ZStack {
+                if viewModel.isLoading {
+                    Text("Loading...")
+                } else {
+                    List {
+                        ForEach(viewModel.users, id: \.id) { item in
+                            UserRowView(item: item)
+                        }
+                    }
                 }
             }
             .navigationTitle("Get to know our publishers")
